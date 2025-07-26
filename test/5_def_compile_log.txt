@@ -1,0 +1,232 @@
+--- 源代码 ---
+001| a=1
+002| b=1
+003| def add(x,y):
+004| 	return x+y
+005| c=add(a,b)
+006| print(c)
+----------------------------------------
+
+--- 1. 词法分析 ---
+类型: IDENTIFIER 值: a                                        行号: 1   位置: 0   
+类型: ASSIGN     值: =                                        行号: 1   位置: 1   
+类型: NUMBER     值: 1                                        行号: 1   位置: 2   
+类型: NEWLINE    值: None                                     行号: 2   位置: 3   
+类型: IDENTIFIER 值: b                                        行号: 2   位置: 4   
+类型: ASSIGN     值: =                                        行号: 2   位置: 5   
+类型: NUMBER     值: 1                                        行号: 2   位置: 6   
+类型: NEWLINE    值: None                                     行号: 3   位置: 7   
+类型: DEF        值: def                                      行号: 3   位置: 8   
+类型: IDENTIFIER 值: add                                      行号: 3   位置: 12  
+类型: LPAREN     值: (                                        行号: 3   位置: 15  
+类型: IDENTIFIER 值: x                                        行号: 3   位置: 16  
+类型: COMMA      值: ,                                        行号: 3   位置: 17  
+类型: IDENTIFIER 值: y                                        行号: 3   位置: 18  
+类型: RPAREN     值: )                                        行号: 3   位置: 19  
+类型: COLON      值: :                                        行号: 3   位置: 20  
+类型: NEWLINE    值: None                                     行号: 4   位置: 21  
+类型: INDENT     值: None                                     行号: 4   位置: 21  
+类型: RETURN     值: return                                   行号: 4   位置: 23  
+类型: IDENTIFIER 值: x                                        行号: 4   位置: 30  
+类型: PLUS       值: +                                        行号: 4   位置: 31  
+类型: IDENTIFIER 值: y                                        行号: 4   位置: 32  
+类型: NEWLINE    值: None                                     行号: 5   位置: 33  
+类型: DEDENT     值: None                                     行号: 5   位置: 33  
+类型: IDENTIFIER 值: c                                        行号: 5   位置: 34  
+类型: ASSIGN     值: =                                        行号: 5   位置: 35  
+类型: IDENTIFIER 值: add                                      行号: 5   位置: 36  
+类型: LPAREN     值: (                                        行号: 5   位置: 39  
+类型: IDENTIFIER 值: a                                        行号: 5   位置: 40  
+类型: COMMA      值: ,                                        行号: 5   位置: 41  
+类型: IDENTIFIER 值: b                                        行号: 5   位置: 42  
+类型: RPAREN     值: )                                        行号: 5   位置: 43  
+类型: NEWLINE    值: None                                     行号: 6   位置: 44  
+类型: PRINT      值: print                                    行号: 6   位置: 45  
+类型: LPAREN     值: (                                        行号: 6   位置: 50  
+类型: IDENTIFIER 值: c                                        行号: 6   位置: 51  
+类型: RPAREN     值: )                                        行号: 6   位置: 52  
+类型: NEWLINE    值: None                                     行号: 7   位置: 53  
+----------------------------------------
+
+--- 2. 语法分析 (AST) ---
+ProgramNode(
+    statements=[
+AssignmentNode(
+            identifier=IdentifierNode(
+                name='a'
+            ),
+            expression=NumberNode(
+                value=1
+            )
+        ),
+AssignmentNode(
+            identifier=IdentifierNode(
+                name='b'
+            ),
+            expression=NumberNode(
+                value=1
+            )
+        ),
+FunctionDefNode(
+            name=IdentifierNode(
+                name='add'
+            ),
+            parameters=[
+IdentifierNode(
+                    name='x'
+                ),
+IdentifierNode(
+                    name='y'
+                )
+            ],
+            body_block=BlockNode(
+                statements=[
+ReturnNode(
+                        expression=BinaryOpNode(
+                            left=IdentifierNode(
+                                name='x'
+                            ),
+                            op=LexToken(PLUS,'+',4,31),
+                            right=IdentifierNode(
+                                name='y'
+                            )
+                        )
+                    )
+                ]
+            )
+        ),
+AssignmentNode(
+            identifier=IdentifierNode(
+                name='c'
+            ),
+            expression=FunctionCallNode(
+                name=IdentifierNode(
+                    name='add'
+                ),
+                arguments=[
+IdentifierNode(
+                        name='a'
+                    ),
+IdentifierNode(
+                        name='b'
+                    )
+                ]
+            )
+        ),
+PrintNode(
+            expression=IdentifierNode(
+                name='c'
+            )
+        )
+    ]
+)
+----------------------------------------
+
+--- 3. 语义分析与符号表 ---
+--- 开始语义分析 ---
+符号定义/更新: Symbol(name='a', type='INTEGER', scope=0, value=1)
+符号定义/更新: Symbol(name='b', type='INTEGER', scope=0, value=1)
+符号定义/更新: Symbol(name='add', type='FUNCTION', scope=0, value=None)
+进入作用域 1
+符号定义/更新: Symbol(name='x', type='PARAMETER', scope=1, value=None)
+符号定义/更新: Symbol(name='y', type='PARAMETER', scope=1, value=None)
+退出作用域 1, 符号: {'x': Symbol(name='x', type='PARAMETER', scope=1, value=None), 'y': Symbol(name='y', type='PARAMETER', scope=1, value=None)}
+符号定义/更新: Symbol(name='c', type='ANY_TYPE', scope=0, value=None)
+语义分析成功完成。
+SymbolTable:
+==============
+--- Scope (level 0) ---
+  a               : Symbol(name='a', type='INTEGER', scope=0, value=1)
+  b               : Symbol(name='b', type='INTEGER', scope=0, value=1)
+  add             : Symbol(name='add', type='FUNCTION', scope=0, value=None)
+  c               : Symbol(name='c', type='ANY_TYPE', scope=0, value=None)
+==============
+----------------------------------------
+
+--- 4. 中间代码生成 ---
+--- 开始中间代码生成 ---
+中间代码生成完成，共 13 条四元式。
+000: ASSIGN          1               _               a              
+001: ASSIGN          1               _               b              
+002: FUNC_BEGIN      add             2               _              
+003: PARAM           x               _               _              
+004: PARAM           y               _               _              
+005: ADD             x               y               t0             
+006: RETURN_VAL      t0              _               _              
+007: FUNC_END        add             _               _              
+008: ARG             a               _               _              
+009: ARG             b               _               _              
+010: CALL            add             2               t1             
+011: ASSIGN          t1              _               c              
+012: PRINT_STR       c               _               _              
+----------------------------------------
+
+--- 4a. 中间代码优化 ---
+--- 开始中间代码优化 (改进版) ---
+中间代码优化完成。优化前 13 条，优化后 13 条。
+--- 优化后四元式 ---
+000: ASSIGN          1               _               a              
+001: ASSIGN          1               _               b              
+002: FUNC_BEGIN      add             2               _              
+003: PARAM           x               _               _              
+004: PARAM           y               _               _              
+005: ADD             x               y               t0             
+006: RETURN_VAL      t0              _               _              
+007: FUNC_END        add             _               _              
+008: ARG             a               _               _              
+009: ARG             b               _               _              
+010: CALL            add             2               t1             
+011: ASSIGN          t1              _               c              
+012: PRINT_STR       c               _               _              
+----------------------------------------
+
+--- 5. 目标代码生成 ---
+.data
+a: .word 1
+b: .word 1
+c: .word 0
+
+.text
+JMP main_entry
+
+# --- Function: add ---
+add:
+PUSH FP   # Prologue: Save old frame pointer
+MOV FP, SP  # Prologue: Set new frame pointer
+LOAD R0, M[x]
+LOAD R1, M[y]
+MOV R2, R0
+ADD R2, R1
+MOV R0, R2 # Set return value
+MOV SP, FP  # Epilogue: Deallocate local vars
+POP FP      # Epilogue: Restore old frame pointer
+RET         # Return to caller
+# Implicit return at end of function
+MOV R0, 0   # Default return value is 0
+MOV SP, FP  # Epilogue
+POP FP      # Epilogue
+RET
+
+# --- Main Program Entry ---
+main_entry:
+LOADI R0, 1
+STORE M[a], R0
+LOADI R0, 1
+STORE M[b], R0
+# Implicit return at end of function
+MOV R0, 0   # Default return value is 0
+MOV SP, FP  # Epilogue
+POP FP      # Epilogue
+RET
+LOAD R0, M[a]
+PUSH R0  # Push argument 'a'
+LOAD R0, M[b]
+PUSH R0  # Push argument 'b'
+CALL add
+ADD SP, SP, 8 # Clean up 2 args from stack
+STORE M[c], R0
+PRINT_INT R0
+HALT
+----------------------------------------
+
+--- 编译成功完成！ ---

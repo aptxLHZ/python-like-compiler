@@ -1,0 +1,202 @@
+--- 源代码 ---
+001| print("Hello, world!")
+002| x = 10
+003| if x > 5:
+004| 	print( "is greater than 5") 
+005| else:
+006| 	print("x is not greater") 
+007| 
+008| # 另一个例子
+009| y = 'this string is fine'
+010| z = "this one is not"
+----------------------------------------
+
+--- 1. 词法分析 ---
+类型: PRINT      值: print                                    行号: 1   位置: 0   
+类型: LPAREN     值: (                                        行号: 1   位置: 5   
+类型: STRING     值: 'Hello, world!'                          行号: 1   位置: 6   
+类型: RPAREN     值: )                                        行号: 1   位置: 21  
+类型: NEWLINE    值: None                                     行号: 2   位置: 22  
+类型: IDENTIFIER 值: x                                        行号: 2   位置: 23  
+类型: ASSIGN     值: =                                        行号: 2   位置: 25  
+类型: NUMBER     值: 10                                       行号: 2   位置: 27  
+类型: NEWLINE    值: None                                     行号: 3   位置: 29  
+类型: IF         值: if                                       行号: 3   位置: 30  
+类型: IDENTIFIER 值: x                                        行号: 3   位置: 33  
+类型: GT         值: >                                        行号: 3   位置: 35  
+类型: NUMBER     值: 5                                        行号: 3   位置: 37  
+类型: COLON      值: :                                        行号: 3   位置: 38  
+类型: NEWLINE    值: None                                     行号: 4   位置: 39  
+类型: INDENT     值: None                                     行号: 4   位置: 39  
+类型: PRINT      值: print                                    行号: 4   位置: 41  
+类型: LPAREN     值: (                                        行号: 4   位置: 46  
+类型: STRING     值: 'is greater than 5'                      行号: 4   位置: 48  
+类型: RPAREN     值: )                                        行号: 4   位置: 67  
+类型: NEWLINE    值: None                                     行号: 5   位置: 69  
+类型: DEDENT     值: None                                     行号: 5   位置: 69  
+类型: ELSE       值: else                                     行号: 5   位置: 70  
+类型: COLON      值: :                                        行号: 5   位置: 74  
+类型: NEWLINE    值: None                                     行号: 6   位置: 75  
+类型: INDENT     值: None                                     行号: 6   位置: 75  
+类型: PRINT      值: print                                    行号: 6   位置: 77  
+类型: LPAREN     值: (                                        行号: 6   位置: 82  
+类型: STRING     值: 'x is not greater'                       行号: 6   位置: 83  
+类型: RPAREN     值: )                                        行号: 6   位置: 101 
+类型: NEWLINE    值: None                                     行号: 7   位置: 103 
+类型: DEDENT     值: None                                     行号: 7   位置: 103 
+类型: NEWLINE    值: None                                     行号: 8   位置: 104 
+类型: NEWLINE    值: None                                     行号: 9   位置: 112 
+类型: IDENTIFIER 值: y                                        行号: 9   位置: 113 
+类型: ASSIGN     值: =                                        行号: 9   位置: 115 
+类型: STRING     值: 'this string is fine'                    行号: 9   位置: 117 
+类型: NEWLINE    值: None                                     行号: 10  位置: 138 
+类型: IDENTIFIER 值: z                                        行号: 10  位置: 139 
+类型: ASSIGN     值: =                                        行号: 10  位置: 141 
+类型: STRING     值: 'this one is not'                        行号: 10  位置: 143 
+类型: NEWLINE    值: None                                     行号: 11  位置: 160 
+----------------------------------------
+
+--- 2. 语法分析 (AST) ---
+ProgramNode(
+    statements=[
+PrintNode(
+            expression=StringNode(
+                value='Hello, world!'
+            )
+        ),
+AssignmentNode(
+            identifier=IdentifierNode(
+                name='x'
+            ),
+            expression=NumberNode(
+                value=10
+            )
+        ),
+IfNode(
+            condition=BinaryOpNode(
+                left=IdentifierNode(
+                    name='x'
+                ),
+                op=LexToken(GT,'>',3,35),
+                right=NumberNode(
+                    value=5
+                )
+            ),
+            then_block=BlockNode(
+                statements=[
+PrintNode(
+                        expression=StringNode(
+                            value='is greater than 5'
+                        )
+                    )
+                ]
+            ),
+            else_block=BlockNode(
+                statements=[
+PrintNode(
+                        expression=StringNode(
+                            value='x is not greater'
+                        )
+                    )
+                ]
+            )
+        ),
+AssignmentNode(
+            identifier=IdentifierNode(
+                name='y'
+            ),
+            expression=StringNode(
+                value='this string is fine'
+            )
+        ),
+AssignmentNode(
+            identifier=IdentifierNode(
+                name='z'
+            ),
+            expression=StringNode(
+                value='this one is not'
+            )
+        )
+    ]
+)
+----------------------------------------
+
+--- 3. 语义分析与符号表 ---
+--- 开始语义分析 ---
+符号定义/更新: Symbol(name='x', type='INTEGER', scope=0, value=10)
+符号定义/更新: Symbol(name='y', type='STRING', scope=0, value='this string is fine')
+符号定义/更新: Symbol(name='z', type='STRING', scope=0, value='this one is not')
+语义分析成功完成。
+SymbolTable:
+==============
+--- Scope (level 0) ---
+  x               : Symbol(name='x', type='INTEGER', scope=0, value=10)
+  y               : Symbol(name='y', type='STRING', scope=0, value='this string is fine')
+  z               : Symbol(name='z', type='STRING', scope=0, value='this one is not')
+==============
+----------------------------------------
+
+--- 4. 中间代码生成 ---
+--- 开始中间代码生成 ---
+中间代码生成完成，共 11 条四元式。
+000: PRINT_STR       Hello, world!   _               _              
+001: ASSIGN          10              _               x              
+002: GT              x               5               t0             
+003: IF_FALSE_GOTO   t0              _               L0             
+004: PRINT_STR       is greater than 5 _               _              
+005: GOTO            _               _               L1             
+006: L0:
+007: PRINT_STR       x is not greater _               _              
+008: L1:
+009: ASSIGN          this string is fine _               y              
+010: ASSIGN          this one is not _               z              
+----------------------------------------
+
+--- 4a. 中间代码优化 ---
+--- 开始中间代码优化 (改进版) ---
+中间代码优化完成。优化前 11 条，优化后 11 条。
+--- 优化后四元式 ---
+000: PRINT_STR       Hello, world!   _               _              
+001: ASSIGN          10              _               x              
+002: GT              x               5               t0             
+003: IF_FALSE_GOTO   t0              _               L0             
+004: PRINT_STR       is greater than 5 _               _              
+005: GOTO            _               _               L1             
+006: L0:
+007: PRINT_STR       x is not greater _               _              
+008: L1:
+009: ASSIGN          this string is fine _               y              
+010: ASSIGN          this one is not _               z              
+----------------------------------------
+
+--- 5. 目标代码生成 ---
+.data
+x: .word 10
+y: .word 0
+z: .word 0
+
+.text
+JMP main_entry
+
+# --- Main Program Entry ---
+main_entry:
+PRINT_STR _str_const_0
+LOADI R0, 10
+MOV R1, R0
+STORE M[x], R1
+PRINT_STR _str_const_1
+PRINT_STR _str_const_2
+LOAD R2, M[this string is fine]
+MOV R0, R2
+STORE M[y], R0
+LOAD R0, M[this one is not]
+STORE M[z], R0
+HALT
+
+# --- String Constants ---
+_str_const_0: .asciiz "Hello, world!"
+_str_const_1: .asciiz "is greater than 5"
+_str_const_2: .asciiz "x is not greater"
+----------------------------------------
+
+--- 编译成功完成！ ---

@@ -1,0 +1,288 @@
+--- 源代码 ---
+001| a=1
+002| b=1
+003| c=1
+004| a=2*3+b/c
+005| b=2*3+b/c
+006| c=2*3+b/c
+007| print(a)
+008| print(b)
+009| print(c)
+----------------------------------------
+
+--- 1. 词法分析 ---
+类型: IDENTIFIER 值: a                                        行号: 1   位置: 0   
+类型: ASSIGN     值: =                                        行号: 1   位置: 1   
+类型: NUMBER     值: 1                                        行号: 1   位置: 2   
+类型: NEWLINE    值: None                                     行号: 2   位置: 3   
+类型: IDENTIFIER 值: b                                        行号: 2   位置: 4   
+类型: ASSIGN     值: =                                        行号: 2   位置: 5   
+类型: NUMBER     值: 1                                        行号: 2   位置: 6   
+类型: NEWLINE    值: None                                     行号: 3   位置: 7   
+类型: IDENTIFIER 值: c                                        行号: 3   位置: 8   
+类型: ASSIGN     值: =                                        行号: 3   位置: 9   
+类型: NUMBER     值: 1                                        行号: 3   位置: 10  
+类型: NEWLINE    值: None                                     行号: 4   位置: 11  
+类型: IDENTIFIER 值: a                                        行号: 4   位置: 12  
+类型: ASSIGN     值: =                                        行号: 4   位置: 13  
+类型: NUMBER     值: 2                                        行号: 4   位置: 14  
+类型: TIMES      值: *                                        行号: 4   位置: 15  
+类型: NUMBER     值: 3                                        行号: 4   位置: 16  
+类型: PLUS       值: +                                        行号: 4   位置: 17  
+类型: IDENTIFIER 值: b                                        行号: 4   位置: 18  
+类型: DIVIDE     值: /                                        行号: 4   位置: 19  
+类型: IDENTIFIER 值: c                                        行号: 4   位置: 20  
+类型: NEWLINE    值: None                                     行号: 5   位置: 21  
+类型: IDENTIFIER 值: b                                        行号: 5   位置: 22  
+类型: ASSIGN     值: =                                        行号: 5   位置: 23  
+类型: NUMBER     值: 2                                        行号: 5   位置: 24  
+类型: TIMES      值: *                                        行号: 5   位置: 25  
+类型: NUMBER     值: 3                                        行号: 5   位置: 26  
+类型: PLUS       值: +                                        行号: 5   位置: 27  
+类型: IDENTIFIER 值: b                                        行号: 5   位置: 28  
+类型: DIVIDE     值: /                                        行号: 5   位置: 29  
+类型: IDENTIFIER 值: c                                        行号: 5   位置: 30  
+类型: NEWLINE    值: None                                     行号: 6   位置: 31  
+类型: IDENTIFIER 值: c                                        行号: 6   位置: 32  
+类型: ASSIGN     值: =                                        行号: 6   位置: 33  
+类型: NUMBER     值: 2                                        行号: 6   位置: 34  
+类型: TIMES      值: *                                        行号: 6   位置: 35  
+类型: NUMBER     值: 3                                        行号: 6   位置: 36  
+类型: PLUS       值: +                                        行号: 6   位置: 37  
+类型: IDENTIFIER 值: b                                        行号: 6   位置: 38  
+类型: DIVIDE     值: /                                        行号: 6   位置: 39  
+类型: IDENTIFIER 值: c                                        行号: 6   位置: 40  
+类型: NEWLINE    值: None                                     行号: 7   位置: 41  
+类型: PRINT      值: print                                    行号: 7   位置: 42  
+类型: LPAREN     值: (                                        行号: 7   位置: 47  
+类型: IDENTIFIER 值: a                                        行号: 7   位置: 48  
+类型: RPAREN     值: )                                        行号: 7   位置: 49  
+类型: NEWLINE    值: None                                     行号: 8   位置: 50  
+类型: PRINT      值: print                                    行号: 8   位置: 51  
+类型: LPAREN     值: (                                        行号: 8   位置: 56  
+类型: IDENTIFIER 值: b                                        行号: 8   位置: 57  
+类型: RPAREN     值: )                                        行号: 8   位置: 58  
+类型: NEWLINE    值: None                                     行号: 9   位置: 59  
+类型: PRINT      值: print                                    行号: 9   位置: 60  
+类型: LPAREN     值: (                                        行号: 9   位置: 65  
+类型: IDENTIFIER 值: c                                        行号: 9   位置: 66  
+类型: RPAREN     值: )                                        行号: 9   位置: 67  
+类型: NEWLINE    值: None                                     行号: 10  位置: 68  
+----------------------------------------
+
+--- 2. 语法分析 (AST) ---
+ProgramNode(
+    statements=[
+AssignmentNode(
+            identifier=IdentifierNode(
+                name='a'
+            ),
+            expression=NumberNode(
+                value=1
+            )
+        ),
+AssignmentNode(
+            identifier=IdentifierNode(
+                name='b'
+            ),
+            expression=NumberNode(
+                value=1
+            )
+        ),
+AssignmentNode(
+            identifier=IdentifierNode(
+                name='c'
+            ),
+            expression=NumberNode(
+                value=1
+            )
+        ),
+AssignmentNode(
+            identifier=IdentifierNode(
+                name='a'
+            ),
+            expression=BinaryOpNode(
+                left=BinaryOpNode(
+                    left=NumberNode(
+                        value=2
+                    ),
+                    op=LexToken(TIMES,'*',4,15),
+                    right=NumberNode(
+                        value=3
+                    )
+                ),
+                op=LexToken(PLUS,'+',4,17),
+                right=BinaryOpNode(
+                    left=IdentifierNode(
+                        name='b'
+                    ),
+                    op=LexToken(DIVIDE,'/',4,19),
+                    right=IdentifierNode(
+                        name='c'
+                    )
+                )
+            )
+        ),
+AssignmentNode(
+            identifier=IdentifierNode(
+                name='b'
+            ),
+            expression=BinaryOpNode(
+                left=BinaryOpNode(
+                    left=NumberNode(
+                        value=2
+                    ),
+                    op=LexToken(TIMES,'*',5,25),
+                    right=NumberNode(
+                        value=3
+                    )
+                ),
+                op=LexToken(PLUS,'+',5,27),
+                right=BinaryOpNode(
+                    left=IdentifierNode(
+                        name='b'
+                    ),
+                    op=LexToken(DIVIDE,'/',5,29),
+                    right=IdentifierNode(
+                        name='c'
+                    )
+                )
+            )
+        ),
+AssignmentNode(
+            identifier=IdentifierNode(
+                name='c'
+            ),
+            expression=BinaryOpNode(
+                left=BinaryOpNode(
+                    left=NumberNode(
+                        value=2
+                    ),
+                    op=LexToken(TIMES,'*',6,35),
+                    right=NumberNode(
+                        value=3
+                    )
+                ),
+                op=LexToken(PLUS,'+',6,37),
+                right=BinaryOpNode(
+                    left=IdentifierNode(
+                        name='b'
+                    ),
+                    op=LexToken(DIVIDE,'/',6,39),
+                    right=IdentifierNode(
+                        name='c'
+                    )
+                )
+            )
+        ),
+PrintNode(
+            expression=IdentifierNode(
+                name='a'
+            )
+        ),
+PrintNode(
+            expression=IdentifierNode(
+                name='b'
+            )
+        ),
+PrintNode(
+            expression=IdentifierNode(
+                name='c'
+            )
+        )
+    ]
+)
+----------------------------------------
+
+--- 3. 语义分析与符号表 ---
+--- 开始语义分析 ---
+符号定义/更新: Symbol(name='a', type='INTEGER', scope=0, value=1)
+符号定义/更新: Symbol(name='b', type='INTEGER', scope=0, value=1)
+符号定义/更新: Symbol(name='c', type='INTEGER', scope=0, value=1)
+符号定义/更新: Symbol(name='a', type='FLOAT', scope=0, value=None)
+符号定义/更新: Symbol(name='b', type='FLOAT', scope=0, value=None)
+符号定义/更新: Symbol(name='c', type='FLOAT', scope=0, value=None)
+语义分析成功完成。
+SymbolTable:
+==============
+--- Scope (level 0) ---
+  a               : Symbol(name='a', type='FLOAT', scope=0, value=None)
+  b               : Symbol(name='b', type='FLOAT', scope=0, value=None)
+  c               : Symbol(name='c', type='FLOAT', scope=0, value=None)
+==============
+----------------------------------------
+
+--- 4. 中间代码生成 ---
+--- 开始中间代码生成 ---
+中间代码生成完成，共 18 条四元式。
+000: ASSIGN          1               _               a              
+001: ASSIGN          1               _               b              
+002: ASSIGN          1               _               c              
+003: MUL             2               3               t0             
+004: DIV             b               c               t1             
+005: ADD             t0              t1              t2             
+006: ASSIGN          t2              _               a              
+007: MUL             2               3               t3             
+008: DIV             b               c               t4             
+009: ADD             t3              t4              t5             
+010: ASSIGN          t5              _               b              
+011: MUL             2               3               t6             
+012: DIV             b               c               t7             
+013: ADD             t6              t7              t8             
+014: ASSIGN          t8              _               c              
+015: PRINT_STR       a               _               _              
+016: PRINT_STR       b               _               _              
+017: PRINT_STR       c               _               _              
+----------------------------------------
+
+--- 4a. 中间代码优化 ---
+--- 开始中间代码优化 (改进版) ---
+中间代码优化完成。优化前 18 条，优化后 11 条。
+--- 优化后四元式 ---
+000: ASSIGN          1               _               a              
+001: ASSIGN          1               _               b              
+002: ASSIGN          1               _               c              
+003: DIV             b               c               t1             
+004: ADD             6               t1              t2             
+005: ASSIGN          t2              _               a              
+006: ASSIGN          t2              _               b              
+007: ASSIGN          t2              _               c              
+008: PRINT_STR       a               _               _              
+009: PRINT_STR       b               _               _              
+010: PRINT_STR       c               _               _              
+----------------------------------------
+
+--- 5. 目标代码生成 ---
+.data
+a: .word 0
+b: .word 0
+c: .word 0
+
+.text
+JMP main_entry
+
+# --- Main Program Entry ---
+main_entry:
+LOADI R0, 1
+MOV R1, R0
+STORE M[a], R1
+MOV R2, R0
+STORE M[b], R2
+STORE M[c], R0
+MOV R0, R2
+DIV R0, R0
+LOADI R0, 6
+LOAD R0, M[t1]
+ADD R0, R0
+MOV R1, R0
+STORE M[a], R1
+MOV R2, R0
+STORE M[b], R2
+STORE M[c], R0
+PRINT_INT R1
+PRINT_INT R2
+PRINT_INT R0
+HALT
+----------------------------------------
+
+--- 编译成功完成！ ---

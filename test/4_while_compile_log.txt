@@ -1,0 +1,268 @@
+--- 源代码 ---
+001| i=1
+002| a=0
+003| while i >0:
+004| 	if a>10:
+005| 		while a==1:
+006| 			print("YES")
+007| 	i=i+1
+008| 	a=a+2
+009| 
+----------------------------------------
+
+--- 1. 词法分析 ---
+类型: IDENTIFIER 值: i                                        行号: 1   位置: 0   
+类型: ASSIGN     值: =                                        行号: 1   位置: 1   
+类型: NUMBER     值: 1                                        行号: 1   位置: 2   
+类型: NEWLINE    值: None                                     行号: 2   位置: 3   
+类型: IDENTIFIER 值: a                                        行号: 2   位置: 4   
+类型: ASSIGN     值: =                                        行号: 2   位置: 5   
+类型: NUMBER     值: 0                                        行号: 2   位置: 6   
+类型: NEWLINE    值: None                                     行号: 3   位置: 7   
+类型: WHILE      值: while                                    行号: 3   位置: 8   
+类型: IDENTIFIER 值: i                                        行号: 3   位置: 14  
+类型: GT         值: >                                        行号: 3   位置: 16  
+类型: NUMBER     值: 0                                        行号: 3   位置: 17  
+类型: COLON      值: :                                        行号: 3   位置: 18  
+类型: NEWLINE    值: None                                     行号: 4   位置: 19  
+类型: INDENT     值: None                                     行号: 4   位置: 19  
+类型: IF         值: if                                       行号: 4   位置: 21  
+类型: IDENTIFIER 值: a                                        行号: 4   位置: 24  
+类型: GT         值: >                                        行号: 4   位置: 25  
+类型: NUMBER     值: 10                                       行号: 4   位置: 26  
+类型: COLON      值: :                                        行号: 4   位置: 28  
+类型: NEWLINE    值: None                                     行号: 5   位置: 29  
+类型: INDENT     值: None                                     行号: 5   位置: 29  
+类型: WHILE      值: while                                    行号: 5   位置: 32  
+类型: IDENTIFIER 值: a                                        行号: 5   位置: 38  
+类型: EQ         值: ==                                       行号: 5   位置: 39  
+类型: NUMBER     值: 1                                        行号: 5   位置: 41  
+类型: COLON      值: :                                        行号: 5   位置: 42  
+类型: NEWLINE    值: None                                     行号: 6   位置: 43  
+类型: INDENT     值: None                                     行号: 6   位置: 43  
+类型: PRINT      值: print                                    行号: 6   位置: 47  
+类型: LPAREN     值: (                                        行号: 6   位置: 52  
+类型: STRING     值: 'YES'                                    行号: 6   位置: 53  
+类型: RPAREN     值: )                                        行号: 6   位置: 58  
+类型: NEWLINE    值: None                                     行号: 7   位置: 59  
+类型: DEDENT     值: None                                     行号: 7   位置: 59  
+类型: DEDENT     值: None                                     行号: 7   位置: 59  
+类型: IDENTIFIER 值: i                                        行号: 7   位置: 61  
+类型: ASSIGN     值: =                                        行号: 7   位置: 62  
+类型: IDENTIFIER 值: i                                        行号: 7   位置: 63  
+类型: PLUS       值: +                                        行号: 7   位置: 64  
+类型: NUMBER     值: 1                                        行号: 7   位置: 65  
+类型: NEWLINE    值: None                                     行号: 8   位置: 66  
+类型: IDENTIFIER 值: a                                        行号: 8   位置: 68  
+类型: ASSIGN     值: =                                        行号: 8   位置: 69  
+类型: IDENTIFIER 值: a                                        行号: 8   位置: 70  
+类型: PLUS       值: +                                        行号: 8   位置: 71  
+类型: NUMBER     值: 2                                        行号: 8   位置: 72  
+类型: NEWLINE    值: None                                     行号: 9   位置: 73  
+类型: DEDENT     值: None                                     行号: 9   位置: 73  
+类型: NEWLINE    值: None                                     行号: 10  位置: 74  
+----------------------------------------
+
+--- 2. 语法分析 (AST) ---
+ProgramNode(
+    statements=[
+AssignmentNode(
+            identifier=IdentifierNode(
+                name='i'
+            ),
+            expression=NumberNode(
+                value=1
+            )
+        ),
+AssignmentNode(
+            identifier=IdentifierNode(
+                name='a'
+            ),
+            expression=NumberNode(
+                value=0
+            )
+        ),
+WhileNode(
+            condition=BinaryOpNode(
+                left=IdentifierNode(
+                    name='i'
+                ),
+                op=LexToken(GT,'>',3,16),
+                right=NumberNode(
+                    value=0
+                )
+            ),
+            body_block=BlockNode(
+                statements=[
+IfNode(
+                        condition=BinaryOpNode(
+                            left=IdentifierNode(
+                                name='a'
+                            ),
+                            op=LexToken(GT,'>',4,25),
+                            right=NumberNode(
+                                value=10
+                            )
+                        ),
+                        then_block=BlockNode(
+                            statements=[
+WhileNode(
+                                    condition=BinaryOpNode(
+                                        left=IdentifierNode(
+                                            name='a'
+                                        ),
+                                        op=LexToken(EQ,'==',5,39),
+                                        right=NumberNode(
+                                            value=1
+                                        )
+                                    ),
+                                    body_block=BlockNode(
+                                        statements=[
+PrintNode(
+                                                expression=StringNode(
+                                                    value='YES'
+                                                )
+                                            )
+                                        ]
+                                    )
+                                )
+                            ]
+                        ),
+                        else_block=None
+                    ),
+AssignmentNode(
+                        identifier=IdentifierNode(
+                            name='i'
+                        ),
+                        expression=BinaryOpNode(
+                            left=IdentifierNode(
+                                name='i'
+                            ),
+                            op=LexToken(PLUS,'+',7,64),
+                            right=NumberNode(
+                                value=1
+                            )
+                        )
+                    ),
+AssignmentNode(
+                        identifier=IdentifierNode(
+                            name='a'
+                        ),
+                        expression=BinaryOpNode(
+                            left=IdentifierNode(
+                                name='a'
+                            ),
+                            op=LexToken(PLUS,'+',8,71),
+                            right=NumberNode(
+                                value=2
+                            )
+                        )
+                    )
+                ]
+            )
+        )
+    ]
+)
+----------------------------------------
+
+--- 3. 语义分析与符号表 ---
+--- 开始语义分析 ---
+符号定义/更新: Symbol(name='i', type='INTEGER', scope=0, value=1)
+符号定义/更新: Symbol(name='a', type='INTEGER', scope=0, value=0)
+符号定义/更新: Symbol(name='i', type='INTEGER', scope=0, value=None)
+符号定义/更新: Symbol(name='a', type='INTEGER', scope=0, value=None)
+语义分析成功完成。
+SymbolTable:
+==============
+--- Scope (level 0) ---
+  i               : Symbol(name='i', type='INTEGER', scope=0, value=None)
+  a               : Symbol(name='a', type='INTEGER', scope=0, value=None)
+==============
+----------------------------------------
+
+--- 4. 中间代码生成 ---
+--- 开始中间代码生成 ---
+中间代码生成完成，共 21 条四元式。
+000: ASSIGN          1               _               i              
+001: ASSIGN          0               _               a              
+002: L0:
+003: GT              i               0               t0             
+004: IF_FALSE_GOTO   t0              _               L2             
+005: GT              a               10              t1             
+006: IF_FALSE_GOTO   t1              _               L4             
+007: L5:
+008: EQ              a               1               t2             
+009: IF_FALSE_GOTO   t2              _               L7             
+010: PRINT_STR       YES             _               _              
+011: GOTO            _               _               L5             
+012: L7:
+013: L3:
+014: L4:
+015: ADD             i               1               t3             
+016: ASSIGN          t3              _               i              
+017: ADD             a               2               t4             
+018: ASSIGN          t4              _               a              
+019: GOTO            _               _               L0             
+020: L2:
+----------------------------------------
+
+--- 4a. 中间代码优化 ---
+--- 开始中间代码优化 (改进版) ---
+中间代码优化完成。优化前 21 条，优化后 21 条。
+--- 优化后四元式 ---
+000: ASSIGN          1               _               i              
+001: ASSIGN          0               _               a              
+002: L0:
+003: GT              i               0               t0             
+004: IF_FALSE_GOTO   t0              _               L2             
+005: GT              a               10              t1             
+006: IF_FALSE_GOTO   t1              _               L4             
+007: L5:
+008: EQ              a               1               t2             
+009: IF_FALSE_GOTO   t2              _               L7             
+010: PRINT_STR       YES             _               _              
+011: GOTO            _               _               L5             
+012: L7:
+013: L3:
+014: L4:
+015: ADD             i               1               t3             
+016: ASSIGN          t3              _               i              
+017: ADD             a               2               t4             
+018: ASSIGN          t4              _               a              
+019: GOTO            _               _               L0             
+020: L2:
+----------------------------------------
+
+--- 5. 目标代码生成 ---
+.data
+i: .word 0
+a: .word 0
+
+.text
+JMP main_entry
+
+# --- Main Program Entry ---
+main_entry:
+LOADI R0, 1
+MOV R1, R0
+STORE M[i], R1
+LOADI R2, 0
+MOV R0, R2
+STORE M[a], R0
+PRINT_STR _str_const_0
+LOADI R0, 1
+MOV R0, R1
+ADD R0, R0
+MOV R1, R0
+STORE M[i], R1
+LOAD R0, M[a]
+LOADI R0, 2
+ADD R0, R0
+STORE M[a], R0
+HALT
+
+# --- String Constants ---
+_str_const_0: .asciiz "YES"
+----------------------------------------
+
+--- 编译成功完成！ ---

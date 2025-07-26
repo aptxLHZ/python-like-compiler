@@ -1,0 +1,10 @@
+print("Hello, world!")
+x = 10
+if x > 5:
+	print( "is greater than 5") 
+else:
+	print("x is not greater") 
+
+# 另一个例子
+y = 'this string is fine'
+z = "this one is not"

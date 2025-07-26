@@ -1,0 +1,6 @@
+a=1
+b=1
+def add(x,y):
+	return x+y
+c=add(a,b)
+print(c)
